@@ -1,0 +1,151 @@
+
+.base {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f9f9f9;
+}
+
+.base-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.form-container h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.form-container .divider {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin-bottom: 1.5rem;
+}
+
+.form-container .form-group {
+    margin-bottom: 1rem;
+}
+
+.form-container .form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #555;
+}
+
+.form-container .form-group .form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.form-container .buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.form-container .buttons .btn {
+    width: 48%;
+    padding: 0.75rem;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    transition: background 0.3s ease;
+}
+
+.form-container .buttons .btn-primary {
+    background: #007bff;
+}
+
+.form-container .buttons .btn-secondary {
+    background: #6c757d;
+}
+
+.form-container .buttons .btn-primary:hover {
+    background: #0056b3;
+}
+
+.form-container .buttons .btn-secondary:hover {
+    background: #5a6268;
+}
+
+.login-form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.chime-logo {
+    width: 100px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #00a86b;
+    box-shadow: 0 0 0 2px rgba(0, 168, 107, 0.2);
+}
+
+.btn-signin {
+    width: 100%;
+    padding: 15px;
+    background-color: #f0f0f0;
+    color: #666;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btn-signin:hover {
+    background-color: #e0e0e0;
+}
+
+.sms-consent {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-links {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.forgot-links a {
+    display: block;
+    color: #00a86b;
+    text-decoration: none;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.forgot-links a:hover {
+    text-decoration: underline;
+}
