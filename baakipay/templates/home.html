@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<div class="container-fluid px-4 py-5">
+    <!-- Top Navigation with Cart and Categories Button -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#categoryOffcanvas" aria-controls="categoryOffcanvas">
+                <i class="fas fa-list me-2"></i>Categories
+            </button>
+        </div>
+        <div>
+            <a href="{{ url_for('views.cart') }}" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> Cart</a>
+        </div>
+    </div>
+
+    <div class="row gx-4 gy-5">
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <!-- New Carousel -->
+            <div id="mainCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner rounded" style="max-height: 400px;"> <!-- Adjust the max-height as needed -->
+                    <div class="carousel-item active">
+                        <img src="../static/images/homepage.jpg" class="d-block w-100" alt="Big Sale" style="max-height: 400px; object-fit: cover;"> <!-- Adjust the max-height and add object-fit: cover -->
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Best Prices in the Market</h5>
+                            <p>Quality Products!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../static/images/frontpicture.jpg" class="d-block w-100" alt="New Arrivals" style="max-height: 400px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>New Arrivals</h5>
+                            <p>Check out our latest products!</p>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="../static/images/free-shipping.jpg" class="d-block w-100" alt="Free Shipping" style="max-height: 400px; object-fit: cover;">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>Country Wide Delivery</h5>
+                            <p>Customized Interior design Plans</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <div class="row g-4">
+                {% for item in items.items %}
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <img src="{{ item.product_picture }}" class="card-img-top" alt="{{ item.product_name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.product_name }}</h5>
+                            <p class="card-text">
+                                <strong class="text-primary">Ksh {{ item.current_price }}</strong>
+                                {% if item.previous_price %}
+                                <small class="text-muted"><del>Ksh {{ item.previous_price }}</del></small>
+                                {% endif %}
+                            </p>
+                            <p class="card-text"><small class="text-muted">{{ item.in_stock }} Items Left</small></p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a href="{{ url_for('views.add_to_cart', item_id=item.id) }}" class="btn btn-primary btn-sm">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% for page_num in items.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if items.page == page_num %}
+                                <li class="page-item active"><a class="page-link" href="{{ url_for('views.home', page=page_num) }}">{{ page_num }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="{{ url_for('views.home', page=page_num) }}">{{ page_num }}</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="col-md-3">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Customer Services</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="../static/images/help.png" alt="Help Center" class="me-3" style="width: 30px; height: 30px;">
+                                <div>
+                                    <h6 class="mb-0">Execellent Customer Service</h6>
+                                    <small class="text-muted">Instant Quotation</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-3">
+                            <div class="d-flex align-items-center">
+                                <img src="../static/images/return.png" alt="Easy Return" class="me-3" style="width: 30px; height: 30px;">
+                                <div>
+                                    <h6 class="mb-0">Wide Variety</h6>
+                                    <small class="text-muted">hhre</small>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex align-items-center">
+                                <img src="../static/images/payment.png" alt="Sell on Amazon" class="me-3" style="width: 30px; height: 30px;">
+                                <div>
+                                    <h6 class="mb-0">Become our Affliate Fundi</h6>
+                                    <small class="text-muted"> Redeemble Points</small>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Promotion Card moved to a lower position -->
+            <div class="card">
+                <img src="../static/images/right2.gif" class="card-img-top" alt="Promotion">
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mt-5">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="../static/images/techweek.png" alt="International brands" class="mb-3" style="width: 50px; height: 50px;">
+                    <h5 class="card-title">International Brands</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="../static/images/FreeDelivery.png" alt="Free Delivery" class="mb-3" style="width: 50px; height: 50px;">
+                    <h5 class="card-title">Free Delivery</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="../static/images/food.png" alt="Amazon Food" class="mb-3" style="width: 50px; height: 50px;">
+                    <h5 class="card-title">Amazon Food</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <img src="../static/images/food.png" alt="Amazon Fresh" class="mb-3" style="width: 50px; height: 50px;">
+                    <h5 class="card-title">Amazon Fresh</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Offcanvas for Categories -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="categoryOffcanvas" aria-labelledby="categoryOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="categoryOffcanvasLabel">Categories</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="list-group">
+            <li class="list-group-item">Gypsum & Accessories</li>
+            <li class="list-group-item">Boards & Accessories</li>
+            <li class="list-group-item">Doors & Locks</li>
+            <li class="list-group-item"> Plumbing & Accessories</li>
+            <li class="list-group-item">Timber & Timber Products</li>
+            <li class="list-group-item">Roofing & Roofing Products</li>
+            <li class="list-group-item">Sanitary & Sanitary Accessories</li>
+            <!-- Add more categories as needed -->
+        </ul>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Our Products{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Our Products</h1>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <img src="{{ url_for('media', filename=product.product_picture) }}" 
+                     class="card-img-top" alt="{{ product.product_name }}"
+                     onerror="this.src='{{ url_for('static', filename='images/default_product_image.jpg') }}';">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+                    <p class="card-text">
+                        {% if product.flash_sale %}
+                        <span class="text-danger"><del>${{ product.previous_price }}</del></span>
+                        <strong class="ml-2">${{ product.current_price }}</strong>
+                        <span class="badge badge-danger ml-2">Sale!</span>
+                        {% else %}
+                        <strong>${{ product.current_price }}</strong>
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        {% if product.in_stock > 0 %}
+                        <span class="text-success">In Stock ({{ product.in_stock }} available)</span>
+                        {% else %}
+                        <span class="text-danger">Out of Stock</span>
+                        {% endif %}
+                    </p>
+                    <div class="mt-auto">
+                        <button class="btn btn-primary btn-sm" {% if product.in_stock == 0 %}disabled{% endif %}>
+                            {% if product.in_stock > 0 %}
+                            Add to Cart
+                            {% else %}
+                            Out of Stock
+                            {% endif %}
+                        </button>
+                        <a href="{{ url_for('product_detail', product_id=product.id) }}" class="btn btn-secondary btn-sm ml-2">View Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div> 
+{% endblock %}

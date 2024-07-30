@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Payment for Order #{{ order.id }}</h2>
+    <p>Total Amount: KES {{ order.total_amount }}</p>
+
+    <form action="{{ url_for('views.payment', order_id=order.id) }}" method="POST">
+        <h3>Select Payment Method:</h3>
+        <div class="payment-options">
+            <div class="payment-option">
+                <input type="radio" id="mpesa" name="payment_method" value="mpesa" required>
+                <label for="mpesa">
+                    <img src="{{ url_for('static', filename='images/mpesa-logo.png') }}" alt="M-Pesa Logo" width="100">
+                    <span>M-Pesa</span>
+                </label>
+            </div>
+            <!-- Add other payment options here if needed -->
+        </div>
+
+        <div id="mpesa-details" style="display: none;">
+            <h4>M-Pesa Payment Instructions:</h4>
+            <ol>
+                <li>Go to M-Pesa on your phone</li>
+                <li>Select "Lipa Na M-Pesa"</li>
+                <li>Select "Pay Bill"</li>
+                <li>Enter Business Number: XXXXXX</li>
+                <li>Enter Account Number: {{ order.id }}</li>
+                <li>Enter Amount: {{ order.total_amount }}</li>
+                <li>Enter your M-Pesa PIN</li>
+                <li>You will receive a confirmation SMS from M-Pesa</li>
+            </ol>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+    </form>
+</div>
+
+<script>
+    document.getElementById('mpesa').addEventListener('change', function() {
+        document.getElementById('mpesa-details').style.display = this.checked ? 'block' : 'none';
+    });
+</script>
+{% endblock %}
