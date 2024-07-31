@@ -7,13 +7,16 @@ from intasend import APIService
 from .utils import role_required
 from .forms import ComplaintForm
 
+# Initialize the Blueprint
 views = Blueprint('views', __name__)
 
+# Set API keys
 API_PUBLISHABLE_KEY = 'YOUR_PUBLISHABLE_KEY'
 API_TOKEN = 'YOUR_API_TOKEN'
 
 @views.route('/')
 def home():
+    """Render the home page with paginated products."""
     page = request.args.get('page', 1, type=int)
     items = Product.query.paginate(page=page, per_page=12)
     
@@ -27,11 +30,13 @@ def home():
 
 @views.route('/media/<path:filename>')
 def serve_media(filename):
+    """Serve media files from the media directory."""
     return send_from_directory(os.path.join(current_app.root_path, '..', 'media'), filename)
 
 @views.route('/add-to-cart/<int:item_id>')
 @login_required
 def add_to_cart(item_id):
+    """Add a product to the cart."""
     item_to_add = Product.query.get(item_id)
     if not item_to_add:
         flash('Product not found.')
@@ -57,6 +62,7 @@ def add_to_cart(item_id):
 @views.route('/cart', methods=['GET'])
 @login_required
 def cart():
+    """Display the user's cart with total amount."""
     cart_items = Cart.query.filter_by(customer_link=current_user.id).all()
     amount = sum(item.product.current_price * item.quantity for item in cart_items)
     return render_template('cart.html', cart=cart_items, amount=amount, total=amount + 200)
@@ -64,6 +70,7 @@ def cart():
 @views.route('/update-cart', methods=['POST'])
 @login_required
 def update_cart():
+    """Update cart item quantities or remove items."""
     cart_id = request.form.get('cart_id')
     action = request.form.get('action')
     
@@ -99,6 +106,7 @@ def update_cart():
 @views.route('/place-order')
 @login_required
 def place_order():
+    """Place an order for the items in the cart."""
     customer_cart = Cart.query.filter_by(customer_link=current_user.id).all()
     if not customer_cart:
         flash('Your cart is empty. Add items to your cart before placing an order.')
@@ -141,12 +149,14 @@ def place_order():
 @views.route('/orders')
 @login_required
 def orders():
+    """Display the user's orders."""
     my_orders = Order.query.filter_by(customer_link=current_user.id).all()
     return render_template('orders.html', orders=my_orders)
 
 @views.route('/payment/<int:order_id>', methods=['GET', 'POST'])
 @login_required
 def payment(order_id):
+    """Handle the payment for an order."""
     order = Order.query.get_or_404(order_id)
     if order.customer_link != current_user.id:
         flash('You do not have permission to access this order.')
@@ -169,6 +179,7 @@ def payment(order_id):
 @login_required
 @role_required(['Customer'])
 def complaint():
+    """Submit a complaint."""
     form = ComplaintForm()
     if form.validate_on_submit():
         new_complaint = Complaint(
@@ -183,7 +194,6 @@ def complaint():
 
     return render_template('complaint.html', form=form)
 
-# Add more routes as needed
 
 if __name__ == '__main__':
-    views.run(debug=True)
+    views.run(debug=True)   
